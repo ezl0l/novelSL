@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        SL.Response response = SL.parse("{\n" +
+        Engine engine = SL.parse("{\n" +
                 "\t\"scenes\": [\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"dungeon\",\n" +

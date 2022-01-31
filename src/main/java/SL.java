@@ -3,8 +3,10 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 
 public class SL {
+
     public static class Response {
         protected Scene[] scenes;
+        protected String path;
 
         public Response(Scene[] scenes) {
             this.scenes = scenes;
@@ -17,6 +19,8 @@ public class SL {
         public Token(String name) {
             this.name = name;
         }
+
+        public abstract void exec();
 
         public String getName() {
             return name;
@@ -35,6 +39,14 @@ public class SL {
 
         public Scene(String name) {
             super(name);
+        }
+
+        @Override
+        public void exec() {
+            for (Action action :
+                    actions) {
+                action.exec();
+            }
         }
 
         public Scene(String name, Action[] actions) {
@@ -62,6 +74,14 @@ public class SL {
             super(name);
         }
 
+        @Override
+        public void exec() {
+            for (Command command :
+                    commands) {
+                command.exec();
+            }
+        }
+
         public Action(String name, Command[] commands) {
             super(name);
             this.commands = commands;
@@ -87,6 +107,19 @@ public class SL {
             super(name);
         }
 
+        @Override
+        public void exec() {
+            switch (name) {
+                case "load_image": {
+
+                }
+
+                case "load_audio": {
+
+                }
+            }
+        }
+
         public Command(String name, String[] params) {
             super(name);
             this.params = params;
@@ -105,9 +138,7 @@ public class SL {
         }
     }
 
-    public static Response parse(String data) {
-        return new Gson().fromJson(data, Response.class);
+    public static Engine parse(String data) {
+        return new Engine().setResponse(new Gson().fromJson(data, Response.class));
     }
-
-
 }
