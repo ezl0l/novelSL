@@ -20,7 +20,7 @@ public class SL {
             this.name = name;
         }
 
-        public abstract void exec();
+        public abstract void exec(Environment environment);
 
         public String getName() {
             return name;
@@ -42,10 +42,10 @@ public class SL {
         }
 
         @Override
-        public void exec() {
+        public void exec(Environment environment) {
             for (Action action :
                     actions) {
-                action.exec();
+                action.exec(environment);
             }
         }
 
@@ -75,10 +75,10 @@ public class SL {
         }
 
         @Override
-        public void exec() {
+        public void exec(Environment environment) {
             for (Command command :
                     commands) {
-                command.exec();
+                command.exec(environment);
             }
         }
 
@@ -108,16 +108,8 @@ public class SL {
         }
 
         @Override
-        public void exec() {
-            switch (name) {
-                case "load_image": {
+        public void exec(Environment environment) {
 
-                }
-
-                case "load_audio": {
-
-                }
-            }
         }
 
         public Command(String name, String[] params) {
