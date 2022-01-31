@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class SL {
@@ -20,8 +21,6 @@ public class SL {
             this.name = name;
         }
 
-        public abstract void exec(Environment environment);
-
         public String getName() {
             return name;
         }
@@ -39,14 +38,6 @@ public class SL {
 
         public Scene(String name) {
             super(name);
-        }
-
-        @Override
-        public void exec(Environment environment) {
-            for (Action action :
-                    actions) {
-                action.exec(environment);
-            }
         }
 
         public Scene(String name, Action[] actions) {
@@ -74,8 +65,7 @@ public class SL {
             super(name);
         }
 
-        @Override
-        public void exec(Environment environment) {
+        public void exec(Environment environment) throws UnknownCommandException, IOException {
             for (Command command :
                     commands) {
                 command.exec(environment);
@@ -107,9 +97,8 @@ public class SL {
             super(name);
         }
 
-        @Override
-        public void exec(Environment environment) {
-
+        public void exec(Environment environment) throws UnknownCommandException, IOException {
+            Engine.execCommand(this, environment);
         }
 
         public Command(String name, String[] params) {
