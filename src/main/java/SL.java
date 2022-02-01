@@ -40,6 +40,14 @@ public class SL {
             super(name);
         }
 
+        public void init(Environment environment) throws UnknownCommandException, IOException {
+            for (Action action :
+                    actions) {
+                if (action.name.equals("init"))
+                    action.exec(environment);
+            }
+        }
+
         public Scene(String name, Action[] actions) {
             super(name);
             this.actions = actions;

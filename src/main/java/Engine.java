@@ -6,11 +6,41 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Engine {
+    static class Resource {
+        enum Type {
+            IMAGE_TYPE,
+            AUDIO_TYPE
+        }
+
+        private String path;
+        private byte[] data;
+        private Type type;
+
+        public Resource(String path, byte[] data, Type type) {
+            this.path = path;
+            this.data = data;
+            this.type = type;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public byte[] getData() {
+            return data;
+        }
+
+        public Type getType() {
+            return type;
+        }
+    }
+
     protected SL.Response response;
-    public static Map<String, byte[]> images = new HashMap<>();
-    public static Map<String, byte[]> audios = new HashMap<>();
+    public static Map<String, Resource> images = new HashMap<>();
+    public static Map<String, Resource> audios = new HashMap<>();
 
     public Engine() {
     }
@@ -24,23 +54,29 @@ public class Engine {
         switch(command.name) {
             case "load_image": {
                 System.out.println("[INFO] Loading image from " + environment.PATH + command.params[1] + "...");
-                images.put(command.params[0], ((DataBufferByte) ImageIO.read(new File(environment.PATH + command.params[1]))
+                images.put(command.params[0], new Resource(environment.PATH + command.params[1], ((DataBufferByte) ImageIO.read(new File(environment.PATH + command.params[1]))
                         .getRaster()
                         .getDataBuffer())
-                        .getData());
+                        .getData(), Resource.Type.IMAGE_TYPE));
                 break;
             }
 
             case "load_audio": {
-                audios.put(command.params[0], ((DataBufferByte) ImageIO.read(new File(environment.PATH + command.params[1]))
+                System.out.println("[INFO] Loading audio from " + environment.PATH + command.params[1] + "...");
+                audios.put(command.params[0], new Resource(environment.PATH + command.params[1], ((DataBufferByte) ImageIO.read(new File(environment.PATH + command.params[1]))
                         .getRaster()
                         .getDataBuffer())
-                        .getData());
+                        .getData(), Resource.Type.AUDIO_TYPE));
                 break;
             }
 
             case "if": {
-
+                System.out.println(command);
+                if(command.params[0].equals("true")) {
+                    String[] commandParams = new String[command.params.length - 2];
+                    System.arraycopy(command.params, 2, commandParams, 0, commandParams.length);
+                    execCommand(new SL.Command(command.params[1], commandParams), environment);
+                }
                 break;
             }
 
@@ -52,13 +88,7 @@ public class Engine {
     public void init() throws UnknownCommandException, IOException {
         for (SL.Scene scene :
                 response.scenes) {
-            for (SL.Action action :
-                    scene.actions) {
-                if(action.name.equals("init")) {
-                    System.out.println("[INFO] Exec '" + action.name + "' action...");
-                    action.exec(new Environment(""));
-                }
-            }
+            scene.init(new Environment(""));
         }
     }
 

@@ -11,8 +11,8 @@ public class Main {
                 "\t\t\t\t\t\"name\": \"init\",\n" +
                 "\t\t\t\t\t\"commands\": [\n" +
                 "\t\t\t\t\t\t{\n" +
-                "\t\t\t\t\t\t\t\"name\": \"load_image\",\n" +
-                "\t\t\t\t\t\t\t\"params\": [\"background\", \"S:\\/marketplace\\/blog\\/source\\/logo.png\"]" +
+                "\t\t\t\t\t\t\t\"name\": \"if\",\n" +
+                "\t\t\t\t\t\t\t\"params\": [\"true\", \"load_image\", \"background\", \"S:\\/marketplace\\/blog\\/source\\/logo.png\"]" +
                 "\t\t\t\t\t\t}\n" +
                 "\t\t\t\t\t]\n" +
                 "\t\t\t\t}\n" +
@@ -21,8 +21,5 @@ public class Main {
                 "\t]\n" +
                 "}");
         engine.init();
-
-        System.out.println(Engine.images.get("background").length);
-        System.out.println(Engine.audios);
     }
 }
