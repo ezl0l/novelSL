@@ -1,12 +1,9 @@
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Engine {
     static class Resource {
@@ -38,15 +35,15 @@ public class Engine {
         }
     }
 
-    protected SL.Response response;
+    protected SL.Quest quest;
     public static Map<String, Resource> images = new HashMap<>();
     public static Map<String, Resource> audios = new HashMap<>();
 
     public Engine() {
     }
 
-    public Engine(SL.Response response) {
-        this.response = response;
+    public Engine(SL.Quest quest) {
+        this.quest = quest;
     }
 
     public static void execCommand(SL.Command command, Environment environment) throws UnknownCommandException,
@@ -87,13 +84,13 @@ public class Engine {
 
     public void init() throws UnknownCommandException, IOException {
         for (SL.Scene scene :
-                response.scenes) {
+                quest.scenes) {
             scene.init(new Environment(""));
         }
     }
 
-    public Engine setResponse(SL.Response response) {
-        this.response = response;
+    public Engine setQuest(SL.Quest quest) {
+        this.quest = quest;
         return this;
     }
 }

@@ -5,12 +5,22 @@ import java.util.Arrays;
 
 public class SL {
 
-    public static class Response {
+    public static class Quest {
         protected Scene[] scenes;
         protected String path;
+        protected Scene currentScene;
 
-        public Response(Scene[] scenes) {
+        public Quest(Scene[] scenes) {
             this.scenes = scenes;
+        }
+
+        public Scene getCurrentScene() {
+            return currentScene;
+        }
+
+        public Quest setCurrentScene(Scene currentScene) {
+            this.currentScene = currentScene;
+            return this;
         }
     }
 
@@ -35,6 +45,7 @@ public class SL {
 
     static class Scene extends Token {
         protected Action[] actions;
+        protected Scene[] outcomes;
 
         public Scene(String name) {
             super(name);
@@ -128,6 +139,6 @@ public class SL {
     }
 
     public static Engine parse(String data) {
-        return new Engine().setResponse(new Gson().fromJson(data, Response.class));
+        return new Engine().setQuest(new Gson().fromJson(data, Quest.class));
     }
 }
